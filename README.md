@@ -8,4 +8,4 @@ cd snarkOS
 ./devnet.sh
 ```
 
-Then run the `test.sh` script from the folder in this ARC repository.
+Then run the `test.sh` script from the folder in this repository.
