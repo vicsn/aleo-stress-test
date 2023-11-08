@@ -73,13 +73,17 @@ first_record=$(echo $records | jq -j '.[0]')
 echo "found record: " $first_record
 
 # get the current height
-height=$(curl -s http://localhost:3030/testnet3/latest/height)
+height=$(curl -s http://localhost:3030/testnet3/block/height/latest/)
+
+## split the network into f and 2f+1
 
 # Spend record once
 snarkos developer execute credits.aleo transfer_private "${first_record}" ${approver_address} 100000u64 --private-key ${approver_private_key} --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
 # Spend record twice
 snarkos developer execute credits.aleo transfer_private "${first_record}" ${approver_address} 100000u64 --private-key ${approver_private_key} --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
 
+## mine some blocks, or not
+## merge the network
 
 #snarkos developer execute token.aleo approve_public ${spender_tester_address} 1u64 --private-key ${approver_private_key} --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
 
