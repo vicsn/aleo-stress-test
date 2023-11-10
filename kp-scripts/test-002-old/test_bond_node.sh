@@ -13,19 +13,14 @@ private_keys=("APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" "APr
 
 
 
-# transfer  credits from val0 to val4 through transferpublic
-snarkos developer execute credits.aleo transfer_public ${addresses[4]} 12000000000000u64 --private-key ${private_keys[0]} --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
-echo letting transaction settle for 15 seconds...
+# transfer 3Million microcredits from val0 to val4 through transferpublic
+snarkos developer execute credits.aleo transfer_public ${addresses[4]} 2000000000u64 --private-key ${private_keys[0]} --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
+echo letting transaction settle for 20 seconds...
 sleep 20
-
-# check the balance of val4
-echo "querying balance of val0"
-val_0_balance=$(curl -s http://127.0.0.1:3030/testnet3/program/credits.aleo/mapping/account/${addresses[4]})
-echo "result: ${val_0_balance}"
 
 
 # use bond_public
-snarkos developer execute credits.aleo bond_public ${addresses[4]} 1200000000000u64 --private-key ${private_keys[4]} --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
-sleep 20
+snarkos developer execute credits.aleo bond_public ${addresses[4]} 1200000u64 --private-key ${private_keys[0]} --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
+sleep 2
 
 curl http://127.0.0.1:3030/testnet3/committee/latest
