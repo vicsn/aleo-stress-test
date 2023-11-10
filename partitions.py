@@ -30,7 +30,7 @@ def move(partition, start, dest, i):
     partition[dest].append(a)
     return partition
 
-def output_byzantine_partitions(output_byzantine_partitions):
+def output_byzantine_partitions(start_partition, validators):
     partition = start_partition
     for i in range(len(partition[0])): 
         for j in range((len(partition[1]))): 
@@ -47,4 +47,4 @@ def output_byzantine_partitions(output_byzantine_partitions):
        
         
 for i in range(3): 
-    output_byzantine_partitions(start_partition)
+    output_byzantine_partitions(start_partition, start_validators)
