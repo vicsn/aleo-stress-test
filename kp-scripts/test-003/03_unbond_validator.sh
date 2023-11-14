@@ -13,7 +13,7 @@ curl http://127.0.0.1:3030/testnet3/committee/latest
 echo ${private_keys[val_index]}
 
 snarkos developer execute credits.aleo unbond_public "1000000000u64" --private-key "${private_keys[val_index]}" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
-#snarkos developer execute credits.aleo unbond_public "187499136928339u64" --private-key "APrivateKey1zkpBjpEgLo4arVUkQmcLdKQMiAKGaHAQVVwmF8HQby8vdYs" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
+#snarkos developer execute credits.aleo unbond_public "187500023802340u64" --private-key "APrivateKey1zkpBjpEgLo4arVUkQmcLdKQMiAKGaHAQVVwmF8HQby8vdYs" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
 #snarkos developer execute credits.aleo unbond_public "1000000000u64" --private-key "APrivateKey1zkp3J6rRrDEDKAMMzSQmkBqd3vPbjp4XTyH7oMKFn7eVFwf" --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
 
 #snarkos developer execute credits.aleo transfer_public ${addresses[4]} 2000000000u64 --private-key ${private_keys[0]} --query "http://localhost:3030" --broadcast "http://localhost:3030/testnet3/transaction/broadcast"
