@@ -7,6 +7,13 @@ import subprocess
 import json
 import paramiko
 
+def get_ec2_instances():
+    cmd = "aws ec2 describe-instances --filters \"Name=instance-state-name,Values=running\" --query 'Reservations[*].Instances[*].[InstanceId, PublicIpAddress]' --output json"
+    output = subprocess.check_output(cmd, shell=True)
+    output = json.loads(output)
+    output = output[0]
+    return output
+
 ec2_instances = get_ec2_instances()
 first_node = ec2_instances[0]
 print(first_node)
