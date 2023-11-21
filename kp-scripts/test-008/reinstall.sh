@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Prompt the user for the branch to install (default is "testnet3")
-read -p "Enter the branch to install (default: vicsn/fix/stress_test_3): " BRANCH
-BRANCH=${BRANCH:-vicsn/fix/stress_test_3}
+# Prompt the user for the branch to install (default is "kp/fix/stress_test_3")
+read -p "Enter the branch to install (default: kp/fix/stress_test_3): " BRANCH
+BRANCH=${BRANCH:-kp/fix/stress_test_3}
 
 # Determine the number of AWS EC2 instances by checking ~/.ssh/config
 NODE_ID=0

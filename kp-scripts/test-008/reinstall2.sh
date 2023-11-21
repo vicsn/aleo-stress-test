@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Prompt the user for the branch to install (default is "testnet3")
+# Prompt the user for the branch to install (default is "kp/fix/stress_test_1")
 read -p "Enter the branch to install (default: kp/fix/stress_test_1): " BRANCH
 BRANCH=${BRANCH:-kp/fix/kp/fix/stress_test_1}
 
