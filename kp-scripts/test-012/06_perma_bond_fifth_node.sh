@@ -4,18 +4,9 @@ addresses=("aleo1rhgdu77hgyqd3xjj8ucu3jj9r2krwz6mnzyd80gncr5fxcwlh5rsvzp9px" "al
 private_keys=("APrivateKey1zkp8CZNn3yeCseEtxuVPbDCwSyhGW6yZKUYKfgXmcpoGPWH" "APrivateKey1zkp2RWGDcde3efb89rjhME1VYA8QMxcxep5DShNBR6n8Yjh" "APrivateKey1zkp2GUmKbVsuc1NSj28pa1WTQuZaK5f1DQJAT6vPcHyWokG" "APrivateKey1zkpBjpEgLo4arVUkQmcLdKQMiAKGaHAQVVwmF8HQby8vdYs" "APrivateKey1zkp3J6rRrDEDKAMMzSQmkBqd3vPbjp4XTyH7oMKFn7eVFwf" "APrivateKey1zkp6w2DLUBBAGTHUK4JWqFjEHvqhTAWDB5Ex3XNGByFsWUh" "APrivateKey1zkpEBzoLNhxVp6nMPoCHGRPudASsbCScHCGDe6waPRm87V1" "APrivateKey1zkpBZ9vQGe1VtpSXnhyrzp9XxMfKtY3cPopFC9ZB6EYFays" "APrivateKey1zkpHqcqMzArwGX3to2x1bDVFDxo7uEWL4FGVKnstphnybZq" "APrivateKey1zkp6QYrYZGxnDmwvQSg7Nw6Ye6WUeXHvs3wtj5Xa9LArc7p" "APrivateKey1zkp9AZwPkk4gYUCRtkaX5ZSfBymToB7azBJHmJkSvfyfcn4" "APrivateKey1zkp2jCDeE8bPnKXKDrXcKaGQRVfoZ1WFUiVorbTwDrEv6Cg" "APrivateKey1zkp7St3ztS3cag91PpyQbBffTc8YLmigCGB97Sf6bkQwvpg" "APrivateKey1zkpGcGacddZtDLRc8RM4cZb6cm3GoUwpJjSCQcf2mfeY6Do" "APrivateKey1zkp4ZXEtPR4VY7vjkCihYcSZxAn68qhr6gTdw8br95vvPFe" "APrivateKey1zkpH7XEPZDUrEBnMtq1JyCR6ipwjFQ5jiHnTCe7Z7heyxff"  "APrivateKey1zkpA9S3Epe8mzDnMuAXBmdxyRXgB8yp7PuMrs2teh8xNcVe"  "APrivateKey1zkp5neB5iVnXMTrR6y8P6wndGE9xWhQzBf3Qoht9yQ17a5o"  "APrivateKey1zkp4u1cUbvkC2r3n3Gz3eNzth1TvffGbFeLgaYyk8efsT4e"  "APrivateKey1zkpBs9zc9FChKZAkoHsf1TERcd9EQhe43NS1xuNSnyJSH1K"  "APrivateKey1zkp3sh4dSfCXd9g86DGHx6PAQG7WrMxE8bMbJxCrpPKSUw3"  "APrivateKey1zkpApK3vKdDDwbf62K5Mh7JsPNksud3ypZEXvuoYPcazStS"  "APrivateKey1zkp2uS6cU4M4J8z2fE3uMuQHkg87AgrMnDQ8NZzGAnpiEXm"  "APrivateKey1zkp8za2Nc39VHQFzBQFH6rhKuB9LqPaoVw1SgUPG8pSGAAn")
 
 # iterate from 4 to 23 and echo the number
-while :
+
+for i in {4..4}
 do
-    for i in {4..4}
-    do
-        echo "bonding node ${i}"
-        snarkos developer execute credits.aleo bond_public ${addresses[i]} 1200000000000u64 --private-key ${private_keys[i]} --query "http://127.0.0.1:3033" --broadcast "http://127.0.0.1:3033/testnet3/transaction/broadcast"
-    done
-    echo letting transaction settle for 60 seconds...
-    sleep 60
-    for i in {4..4}
-    do
-        echo "unbonding node ${i}"
-        snarkos developer execute credits.aleo unbond_public 1200000000000u64 --private-key ${private_keys[i]} --query "http://127.0.0.1:3033" --broadcast "http://127.0.0.1:3033/testnet3/transaction/broadcast"
-    done
+    echo "bonding node ${i}"
+    snarkos developer execute credits.aleo bond_public ${addresses[i]} 1200000000000u64 --private-key ${private_keys[i]} --query "http://127.0.0.1:3032" --broadcast "http://127.0.0.1:3032/testnet3/transaction/broadcast"
 done

@@ -4,6 +4,38 @@
 read -p "Enter the total number of validators (default: 4): " total_validators
 total_validators=${total_validators:-4}
 
+# Ask the user if they want to run 'cargo install --path .' or use a pre-installed binary
+read -p "Do you want to run 'cargo install --path .' to build the binary? (y/n, default: n): " build_binary
+build_binary=${build_binary:-n}
+
+# Ask the user whether to clear the existing ledger logs
+read -p "Do you want to clear the existing ledger logs? (y/n, default: y): " clear_logs
+clear_logs=${clear_logs:-y}
+
+if [[ $build_binary == "y" ]]; then
+  # Build the binary using 'cargo install --path .'
+  cargo install --path . || exit 1
+fi
+
+# Clear the ledger logs for each validator if the user chooses to clear logs
+if [[ $clear_logs == "y" ]]; then
+  # Create an array to store background processes
+  clean_processes=()
+
+  for ((validator_index = 0; validator_index < total_validators; validator_index++)); do
+    # Run 'snarkos clean' for each validator in the background
+    snarkos clean --dev $validator_index &
+
+    # Store the process ID of the background task
+    clean_processes+=($!)
+  done
+
+  # Wait for all 'snarkos clean' processes to finish
+  for process_id in "${clean_processes[@]}"; do
+    wait "$process_id"
+  done
+fi
+
 # Create a timestamp-based directory for log files
 log_dir=".logs"
 mkdir -p "$log_dir"

@@ -1,1 +1,1 @@
-snarkos start --nodisplay --dev 4 --dev-num-validators 4 --validator --verbosity 5 --logfile .logs/validator-4.log
+snarkos start --nodisplay --dev 4 --dev-num-validators 4 --validator --verbosity 0 --logfile .logs/validator-4.log

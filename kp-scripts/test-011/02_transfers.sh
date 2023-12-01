@@ -10,11 +10,9 @@ do
     # Calculate the key index by taking the modulo of i with 4. This will cycle the key index from 0 to 3.
     key_index=$((i % 4))
     
-    snarkos developer execute credits.aleo transfer_public ${addresses[i]} 30000000000000u64 --private-key ${private_keys[$key_index]} --query "http://127.0.0.1:3033" --broadcast "http://127.0.0.1:3033/testnet3/transaction/broadcast"
+    snarkos developer execute credits.aleo transfer_public ${addresses[i]} 30000000000000u64 --private-key ${private_keys[$key_index]} --query "http://127.0.0.1:3030" --broadcast "http://127.0.0.1:3030/testnet3/transaction/broadcast"
 done
     
 echo letting transaction settle for 15 seconds...
 sleep 15
-
-curl http://127.0.0.1:3033/testnet3/committee/latest
-curl http://127.0.0.1:3033/testnet3/program/credits.aleo/mapping/account/aleo1p9sg8gapg22p3j42tang7c8kqzp4lhe6mg77gx32yys2a5y7pq9sxh6wrd
+echo finished
