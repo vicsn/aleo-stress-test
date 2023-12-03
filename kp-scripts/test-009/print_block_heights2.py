@@ -44,7 +44,7 @@ async def query_heights(session, ec2_instances, last_heights, last_change_time):
 
 async def main():
     ec2_instances = await get_ec2_instances()
-    ec2_instances = ec2_instances[:4]
+    ec2_instances = ec2_instances[:20]
     last_heights = [""] * len(ec2_instances)
     last_change_time = [time.time()] * len(ec2_instances)
 

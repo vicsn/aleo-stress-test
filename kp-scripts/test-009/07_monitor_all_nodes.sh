@@ -7,8 +7,8 @@ while [ -n "$(grep "aws-n${NODE_ID}" ~/.ssh/config)" ]; do
 done
 
 # Read the number of AWS EC2 instances to query from the user
-read -p "Enter the number of AWS EC2 instances to query (default: 24): " NUM_INSTANCES
-NUM_INSTANCES="${NUM_INSTANCES:-24}"
+read -p "Enter the number of AWS EC2 instances to query (default: 20): " NUM_INSTANCES
+NUM_INSTANCES="${NUM_INSTANCES:-20}"
 
 echo "Using $NUM_INSTANCES AWS EC2 instances for querying."
 
