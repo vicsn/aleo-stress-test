@@ -7,8 +7,8 @@ while [ -n "$(grep "aws-n${NODE_ID}" ~/.ssh/config)" ]; do
 done
 
 # Read the number of AWS EC2 instances to query from the user
-read -p "Enter the number of AWS EC2 instances to query (default: 20): " NUM_INSTANCES
-NUM_INSTANCES="${NUM_INSTANCES:-20}"
+read -p "Enter the number of AWS EC2 instances to query (default: 4): " NUM_INSTANCES
+NUM_INSTANCES="${NUM_INSTANCES:-4}"
 
 echo "Using $NUM_INSTANCES AWS EC2 instances for querying."
 
@@ -39,7 +39,7 @@ start_snarkos_in_tmux() {
     tmux new-session -d -s snarkos-session
 
     # Send the snarkOS start command to the tmux session with the NODE_ID
-    tmux send-keys -t "snarkos-session" "snarkos start --nodisplay --bft 0.0.0.0:5000 --rest 0.0.0.0:3033 --peers $NODE_IP:4133 --validators $NODE_IP:5000 --verbosity $VERBOSITY --dev $NODE_ID --dev-num-validators 4 --validator --logfile $log_file --nocdn" C-m
+    tmux send-keys -t "snarkos-session" "snarkos start --nodisplay --bft 0.0.0.0:5000 --rest 0.0.0.0:3033 --peers $NODE_IP:4133 --validators $NODE_IP:5000 --verbosity $VERBOSITY --dev $NODE_ID --dev-num-validators $NUM_INSTANCES --validator --logfile $log_file --nocdn" C-m
 
     exit  # Exit root user
 EOF
@@ -53,7 +53,7 @@ EOF
 }
 
 # Loop through aws-n nodes and start snarkOS in tmux sessions in parallel
-for NODE_ID in $(seq 4 $(($NUM_INSTANCES - 1))); do
+for NODE_ID in $(seq 0 $(($NUM_INSTANCES - 1))); do
   start_snarkos_in_tmux $NODE_ID "$NODE_0_IP" &
 done
 
