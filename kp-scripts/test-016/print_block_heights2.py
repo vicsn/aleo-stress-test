@@ -4,7 +4,7 @@ import json
 import time
 import os
 
-num_nodes = 4
+num_nodes = 8
 
 # Threshold for unchanged height in seconds
 unchanged_threshold = 300
