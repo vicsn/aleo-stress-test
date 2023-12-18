@@ -1,5 +1,6 @@
 import subprocess
 import time
+from helper import *
 
 def run_command(command, check_output=False):
     result = subprocess.run(command, shell=True, capture_output=True, text=True)
@@ -62,4 +63,11 @@ def manage_partitions(new_partitions, tmux_session="devnet"):
 
 # Example usage
 new_partitions = [[0, 1, 2, 3, 4, 5, 6, 7]]
-manage_partitions(new_partitions)
+#manage_partitions(new_partitions)
+
+# Sleep for 1 minute
+#time.sleep(60)
+
+staked_balances = get_staked_balances(0)
+
+a = 0
