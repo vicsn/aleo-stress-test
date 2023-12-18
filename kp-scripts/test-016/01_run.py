@@ -61,13 +61,32 @@ def manage_partitions(new_partitions, tmux_session="devnet"):
         time.sleep(0.5)  # Wait for window to be created
         run_command(f"tmux send-keys -t {tmux_session}:'{window_name}' '{start_command}' C-m")
 
-# Example usage
+num_nodes = 8
 new_partitions = [[0, 1, 2, 3, 4, 5, 6, 7]]
-#manage_partitions(new_partitions)
+target_node_weights = [3, 1, 1, 1, 1, 1, 1, 1]
 
+#manage_partitions(new_partitions)
 # Sleep for 1 minute
 #time.sleep(60)
 
-staked_balances = get_staked_balances(0)
+def obtain_target_stake_balances():
+    max_target_node_weight_index = target_node_weights.index(max(target_node_weights))
+    max_weight = target_node_weights[max_target_node_weight_index]
+
+    staked_balances = get_staked_balances(0)
+    credits_of_max_weight = staked_balances[max_target_node_weight_index]
+
+    for node in range(num_nodes):
+        node_weight = target_node_weights[node]
+        if node_weight != max_weight:
+            target_node_credits = node_weight / max_weight * credits_of_max_weight
+
+            credits_to_unbond = int(staked_balances[node] - target_node_credits)
+
+            unbond_credit(node, credits_to_unbond, 0)
+
+            staked_balances = get_staked_balances(0)
+    
+obtain_target_stake_balances()
 
 a = 0
