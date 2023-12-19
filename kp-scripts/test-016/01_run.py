@@ -58,15 +58,23 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
 
     for partition in new_partitions:
         partition_strings = [str(node) for node in partition]
-        new_nodes = set(partition_strings)
 
-        nodes_to_start = new_nodes
+        nodes_to_start = partition_strings
 
         print(f"Nodes to Start: {nodes_to_start}")
 
-        for node in nodes_to_start:
+        for i, node in enumerate(nodes_to_start):
             log_file = f'node_{node}.log'
-            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}"
+
+            peers_string = ""
+            if(i > 0):
+                peer_port = 4030 + int(nodes_to_start[0])
+            else:
+                peer_port = 4030 + int(nodes_to_start[1])
+
+            peers_string = f" --peers 127.0.0.1:{peer_port}"
+
+            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}{peers_string}"
 
             window_name = f'window{node}'
             if not check_tmux_window_exists(tmux_session, window_name):
