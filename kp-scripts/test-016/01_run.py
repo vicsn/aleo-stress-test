@@ -37,38 +37,42 @@ def create_tmux_session(session_name):
     run_command(f"tmux new-session -d -s {session_name}")
     time.sleep(1)  # Wait for the session to be fully set up
 
+def check_tmux_window_exists(session_name, window_name):
+    check_window_command = f"tmux list-windows -t {session_name} | grep {window_name}"
+    result = run_command(check_window_command)
+    return result.returncode == 0
+
 def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=False):
     if create_new_session:
         create_tmux_session(tmux_session)
 
-    for partition in new_partitions:
+    current_nodes_ids_list, current_nodes_pids = get_running_nodes()
+    current_nodes_ids = set(current_nodes_ids_list)
 
+    nodes_to_shutdown = current_nodes_ids
+    print(f"Nodes to Shutdown: {nodes_to_shutdown}")
+
+    for node in nodes_to_shutdown:
+        node_index_in_list = current_nodes_ids_list.index(node)
+        run_command(f'kill {current_nodes_pids[node_index_in_list]}')
+
+    for partition in new_partitions:
         partition_strings = [str(node) for node in partition]
-        current_nodes_ids_list, current_nodes_pids = get_running_nodes()
-        current_nodes_ids = set(current_nodes_ids_list)
         new_nodes = set(partition_strings)
 
-        nodes_to_shutdown = current_nodes_ids - new_nodes
-        nodes_to_start = new_nodes - current_nodes_ids
+        nodes_to_start = new_nodes
 
-        print(f"Current Nodes: {current_nodes_ids}")
-        print(f"New Nodes: {new_nodes}")
-        print(f"Nodes to Shutdown: {nodes_to_shutdown}")
         print(f"Nodes to Start: {nodes_to_start}")
-
-        for node in nodes_to_shutdown:
-            node_index_in_list = current_nodes_ids.index(node)
-            run_command(f'kill {current_nodes_pids[node_index_in_list]}')
 
         for node in nodes_to_start:
             log_file = f'node_{node}.log'
-            total_validators = len(new_nodes)
-            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {total_validators} --validator --verbosity 0 --logfile {log_file}"
+            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}"
 
             window_name = f'window{node}'
-            run_command(f"tmux new-window -t {tmux_session} -n '{window_name}'")
-            time.sleep(0.5)  # Wait for window to be created
-            run_command(f"tmux send-keys -t {tmux_session}:'{window_name}' '{start_command}' C-m")
+            if not check_tmux_window_exists(tmux_session, window_name):
+                run_command(f"tmux new-window -t {tmux_session} -n '{window_name}'")
+                time.sleep(0.5)  # Wait for window to be created
+            run_command(f"tmux send-keys -t {tmux_session}:{window_name} '{start_command}' C-m")
 
 num_nodes = 8
 new_partitions = [[0, 1, 2, 3, 4, 5, 6, 7]]
@@ -93,9 +97,9 @@ def obtain_target_stake_balances():
             staked_balances = get_staked_balances(0)
     
 
-#manage_partitions(new_partitions, create_new_session=True)
+manage_partitions(new_partitions, create_new_session=True)
 # Sleep for 1 minute
-#time.sleep(60)
+time.sleep(60)
             
 #obtain_target_stake_balances()
 
