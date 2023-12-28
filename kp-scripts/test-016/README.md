@@ -1,4 +1,6 @@
 Code to test partitioning attack
+* Ensure you have this snarkOS version installed: https://github.com/kpandl/fix-snarkOS-partition/tree/fix/partitioning
+* Run the python file 01
 
 Concept:
 * Generally, implement in Python

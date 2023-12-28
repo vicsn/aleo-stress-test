@@ -54,7 +54,12 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
 
     for node in nodes_to_shutdown:
         node_index_in_list = current_nodes_ids_list.index(node)
-        run_command(f'kill {current_nodes_pids[node_index_in_list]}')
+
+        port = 3030 + int(node)
+        stop_url = f"http://127.0.0.1:{port}/testnet3/shutdown"
+        run_command(f"curl {stop_url}")
+
+        #run_command(f'kill {current_nodes_pids[node_index_in_list]}')
 
     for partition in new_partitions:
         partition_strings = [str(node) for node in partition]
@@ -106,14 +111,13 @@ def obtain_target_stake_balances():
     
 
 manage_partitions(new_partitions, create_new_session=True)
-# Sleep for 1 minute
-time.sleep(60)
-            
-#obtain_target_stake_balances()
 
-a = 0
+while True:
+    # Sleep for 1 minute
+    time.sleep(90)
+                
+    #obtain_target_stake_balances()
 
+    changed_partitions = [[0, 1, 2], [3, 4, 5, 6, 7]]
 
-changed_partitions = [[0, 1, 2], [3, 4, 5, 6, 7]]
-
-manage_partitions(changed_partitions)
+    manage_partitions(changed_partitions)
