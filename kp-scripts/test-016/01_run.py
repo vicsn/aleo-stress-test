@@ -44,6 +44,7 @@ def check_tmux_window_exists(session_name, window_name):
 
 def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=False):
     if create_new_session:
+        print("Creating new tmux session.")
         create_tmux_session(tmux_session)
 
     current_nodes_ids_list, current_nodes_pids = get_running_nodes()
@@ -60,6 +61,10 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
         run_command(f"curl {stop_url}")
 
         #run_command(f'kill {current_nodes_pids[node_index_in_list]}')
+
+    print("Finished shutting down nodes, sleeping 5 seconds.")
+
+    time.sleep(5)
 
     for partition in new_partitions:
         partition_strings = [str(node) for node in partition]
@@ -87,6 +92,8 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
                 time.sleep(0.5)  # Wait for window to be created
             run_command(f"tmux send-keys -t {tmux_session}:{window_name} '{start_command}' C-m")
 
+    print("Finished starting nodes.")
+
 num_nodes = 8
 new_partitions = [[0, 1, 2, 3, 4, 5, 6, 7]]
 target_node_weights = [3, 1, 1, 1, 1, 1, 1, 1]
@@ -112,12 +119,20 @@ def obtain_target_stake_balances():
 
 manage_partitions(new_partitions, create_new_session=True)
 
+first_run = True
+
 while True:
-    # Sleep for 1 minute
-    time.sleep(90)
+    print("sleeping")
+    if(not first_run):
+        time.sleep(100)
+    else:
+        time.sleep(75)
+    print("finished sleeping")
                 
     #obtain_target_stake_balances()
 
     changed_partitions = [[0, 1, 2], [3, 4, 5, 6, 7]]
 
     manage_partitions(changed_partitions)
+    #manage_partitions(new_partitions)
+    break

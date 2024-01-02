@@ -1,6 +1,6 @@
 Code to test partitioning attack
-* Ensure you have this snarkOS version installed: https://github.com/kpandl/fix-snarkOS-partition/tree/fix/partitioning
-* Run the python file 01
+* Ensure you have this snarkOS version installed: https://github.com/AleoHQ/snarkOS/tree/kp/fix/stress_test_5
+* Run the python file 01 - currently, it runs the entire network, stops it, and starts a partitioned network
 
 Concept:
 * Generally, implement in Python
