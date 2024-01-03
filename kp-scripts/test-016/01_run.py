@@ -118,10 +118,10 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
 
     print("Finished starting nodes.")
 
-num_nodes = 8
-new_partitions = [[0, 1, 2, 3, 4, 5, 6, 7]]
+initial_partitions = [[0, 1, 2, 3, 4, 5, 6, 7]]
+num_nodes = len(initial_partitions[0])
 
-target_node_weights = [3, 1, 1, 1, 1, 1, 1, 1]
+target_node_weights = [3, 1, 1, 1, 1, 1, 1, 1, 1]
 
 def obtain_target_stake_balances():
     max_target_node_weight_index = target_node_weights.index(max(target_node_weights))
@@ -142,7 +142,7 @@ def obtain_target_stake_balances():
             staked_balances = get_staked_balances(0)
     
 
-manage_partitions(new_partitions, create_new_session=True)
+manage_partitions(initial_partitions, create_new_session=True)
 
 first_run = True
 
@@ -163,5 +163,5 @@ while True:
     #changed_partitions = [[0, 1, 2, 3, 4, 5, 6], [7]]
 
     manage_partitions(changed_partitions)
-    #manage_partitions(new_partitions)
+    #manage_partitions(initial_partitions)
     break
