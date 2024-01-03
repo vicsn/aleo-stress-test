@@ -81,6 +81,9 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
         print(f"Nodes to Start: {nodes_to_start}")
 
         for i, node in enumerate(nodes_to_start):
+            other_nodes = nodes_to_start.copy()
+            del other_nodes[i]
+
             log_file = f'node_{node}.log'
 
             peers_string = ""
@@ -100,7 +103,12 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
             
             print("nottrustedvalidators_string", nottrustedvalidators_string)
 
-            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}{peers_string}{nottrustedvalidators_string}"
+            trustedvalidators_string = ""
+            if(len(partition_strings) > 0):
+                ips_of_trustedvalidators = [f"127.0.0.1:{5000 + int(node)}" for node in other_nodes]
+                trustedvalidators_string = f" --validators {','.join(ips_of_trustedvalidators)}"
+
+            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}{peers_string}{trustedvalidators_string}{nottrustedvalidators_string}"
 
             window_name = f'window{node}'
             if not check_tmux_window_exists(tmux_session, window_name):
@@ -112,6 +120,7 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
 
 num_nodes = 8
 new_partitions = [[0, 1, 2, 3, 4, 5, 6, 7]]
+
 target_node_weights = [3, 1, 1, 1, 1, 1, 1, 1]
 
 def obtain_target_stake_balances():
@@ -145,10 +154,13 @@ while True:
         time.sleep(75)
     print("finished sleeping")
                 
-    #obtain_target_stake_balances()
+    obtain_target_stake_balances()
 
-    #changed_partitions = [[0, 1, 2], [3, 4, 5, 6, 7]]
-    changed_partitions = [[0, 1, 2, 3, 4, 5, 6], [7]]
+    # sleep 15 seconds
+    time.sleep(15)
+
+    changed_partitions = [[0, 1, 2], [3, 4, 5, 6, 7]]
+    #changed_partitions = [[0, 1, 2, 3, 4, 5, 6], [7]]
 
     manage_partitions(changed_partitions)
     #manage_partitions(new_partitions)
