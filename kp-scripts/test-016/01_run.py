@@ -66,8 +66,15 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
 
     time.sleep(5)
 
-    for partition in new_partitions:
+    for i, partition in enumerate(new_partitions):
+        list_of_other_partitions = new_partitions.copy()
+        del list_of_other_partitions[i]
+
+        # flatten list of partitions into a single list
+        list_of_other_partitions = [item for sublist in list_of_other_partitions for item in sublist]
+
         partition_strings = [str(node) for node in partition]
+        list_of_other_partitions_strings = [str(node) for node in list_of_other_partitions]
 
         nodes_to_start = partition_strings
 
@@ -79,12 +86,21 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
             peers_string = ""
             if(i > 0):
                 peer_port = 4030 + int(nodes_to_start[0])
-            else:
+                peers_string = f" --peers 127.0.0.1:{peer_port}"
+            elif(i == 0 and len(nodes_to_start) > 1):
                 peer_port = 4030 + int(nodes_to_start[1])
+                peers_string = f" --peers 127.0.0.1:{peer_port}"
+            elif(i == 0 and len(nodes_to_start) == 1):
+                pass
 
-            peers_string = f" --peers 127.0.0.1:{peer_port}"
+            nottrustedvalidators_string = ""
+            if(len(list_of_other_partitions_strings) > 0):
+                ips_of_nottrustedvalidators = [f"127.0.0.1:{5000 + int(node)}" for node in list_of_other_partitions_strings]
+                nottrustedvalidators_string = f" --nottrustedvalidators {','.join(ips_of_nottrustedvalidators)}"
+            
+            print("nottrustedvalidators_string", nottrustedvalidators_string)
 
-            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}{peers_string}"
+            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}{peers_string}{nottrustedvalidators_string}"
 
             window_name = f'window{node}'
             if not check_tmux_window_exists(tmux_session, window_name):
@@ -131,7 +147,8 @@ while True:
                 
     #obtain_target_stake_balances()
 
-    changed_partitions = [[0, 1, 2], [3, 4, 5, 6, 7]]
+    #changed_partitions = [[0, 1, 2], [3, 4, 5, 6, 7]]
+    changed_partitions = [[0, 1, 2, 3, 4, 5, 6], [7]]
 
     manage_partitions(changed_partitions)
     #manage_partitions(new_partitions)
