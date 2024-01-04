@@ -80,21 +80,25 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
 
         print(f"Nodes to Start: {nodes_to_start}")
 
-        for i, node in enumerate(nodes_to_start):
+        for j, node in enumerate(nodes_to_start):
             other_nodes = nodes_to_start.copy()
-            del other_nodes[i]
+            del other_nodes[j]
 
             log_file = f'node_{node}.log'
 
             peers_string = ""
-            if(i > 0):
+            if(j > 0):
                 peer_port = 4030 + int(nodes_to_start[0])
                 peers_string = f" --peers 127.0.0.1:{peer_port}"
-            elif(i == 0 and len(nodes_to_start) > 1):
+            elif(j == 0 and len(nodes_to_start) > 1):
                 peer_port = 4030 + int(nodes_to_start[1])
                 peers_string = f" --peers 127.0.0.1:{peer_port}"
-            elif(i == 0 and len(nodes_to_start) == 1):
+            elif(j == 0 and len(nodes_to_start) == 1):
                 pass
+
+            firstnodeinpartition_string = ""
+            if(j == 0):
+                firstnodeinpartition_string = " --firstnodeinpartition"
 
             nottrustedvalidators_string = ""
             if(len(list_of_other_partitions_strings) > 0):
@@ -104,11 +108,11 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
             print("nottrustedvalidators_string", nottrustedvalidators_string)
 
             trustedvalidators_string = ""
-            if(len(partition_strings) > 0):
+            if(len(other_nodes) > 0):
                 ips_of_trustedvalidators = [f"127.0.0.1:{5000 + int(node)}" for node in other_nodes]
                 trustedvalidators_string = f" --validators {','.join(ips_of_trustedvalidators)}"
-
-            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}{peers_string}{trustedvalidators_string}{nottrustedvalidators_string}"
+                
+            start_command = f"snarkos start --nodisplay --dev {node} --dev-num-validators {num_nodes} --validator --verbosity 0 --logfile {log_file}{peers_string}{trustedvalidators_string}{nottrustedvalidators_string}{firstnodeinpartition_string}"
 
             window_name = f'window{node}'
             if not check_tmux_window_exists(tmux_session, window_name):
@@ -121,7 +125,7 @@ def manage_partitions(new_partitions, tmux_session="devnet", create_new_session=
 initial_partitions = [[0, 1, 2, 3, 4, 5, 6, 7]]
 num_nodes = len(initial_partitions[0])
 
-target_node_weights = [3, 1, 1, 1, 1, 1, 1, 1, 1]
+target_node_weights = [1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 def obtain_target_stake_balances():
     max_target_node_weight_index = target_node_weights.index(max(target_node_weights))
@@ -149,17 +153,17 @@ first_run = True
 while True:
     print("sleeping")
     if(not first_run):
-        time.sleep(100)
+        time.sleep(90)
     else:
         time.sleep(75)
     print("finished sleeping")
                 
-    obtain_target_stake_balances()
+    #obtain_target_stake_balances()
 
     # sleep 15 seconds
     time.sleep(15)
 
-    changed_partitions = [[0, 1, 2], [3, 4, 5, 6, 7]]
+    changed_partitions = [[0], [1, 2, 3, 4, 5, 6, 7]]
     #changed_partitions = [[0, 1, 2, 3, 4, 5, 6], [7]]
 
     manage_partitions(changed_partitions)
