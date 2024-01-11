@@ -1,0 +1,1 @@
+Python script ot analyze the block time distribution based on validator node logs
