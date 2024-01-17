@@ -4,14 +4,17 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-val_id_sender = 1
-val_id_receiver = 3
+val_id_sender = 3
+val_id_receiver = 0
 
 ip_sender = f"127.0.0.1:{5000+val_id_sender}"
 ip_receiver = f"127.0.0.1:{5000+val_id_receiver}"
 
+ip_receiver = "18.118.145.229:5000"
+ip_sender = "3.144.143.130:5000"
+
 def load_validator_logs(id):
-    log_file_name = f"validator-{id}.log"
+    log_file_name = f"val-{id}.log"
     log_file_path = os.path.join(os.getcwd(), log_file_name)
 
     with open(log_file_path, 'r') as file:
@@ -40,12 +43,17 @@ df_reveicer_filtered = filter_requests(f"Received 'CertificateResponse' from '{i
 # iterate over sender filtered
 
 time_diff_list = []
+num_0 = 0
 
 for index, row in df_sender_filtered.iterrows():
     sending_time = row['Timestamp']
 
     # find a row in receiver with the receiving time shortly after sending time
     df_receiver_filtered = df_reveicer_filtered[df_reveicer_filtered['Timestamp'] > sending_time]
+
+    if len(df_receiver_filtered) == 0:
+        num_0 += 1
+        continue
 
     # get the first row
     row_receiver = df_receiver_filtered.iloc[0]
@@ -59,6 +67,7 @@ for index, row in df_sender_filtered.iterrows():
     
     time_diff_list.append(time_diff_seconds)
 
+print(f"Number of requests with no response: {num_0}")
 
 print("Statistics:")
 print(f"Number of requests: {len(time_diff_list)}")
