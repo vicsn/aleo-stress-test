@@ -1,0 +1,1 @@
+snarkos start --nodisplay --dev 9 --dev-num-validators 8 --validator --verbosity 5 --logfile .logs/validator-9.log
