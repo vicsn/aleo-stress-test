@@ -1,0 +1,55 @@
+program medium_constraint_program.aleo;
+
+
+
+function main:
+    input r0 as field.private;
+    hash.sha3_256 r0 into r1 as field;
+    hash.sha3_256 r1 into r2 as field;
+    hash.sha3_256 r2 into r3 as field;
+    hash.psd8 r3 into r4 as field;
+    hash.psd8 r4 into r5 as field;
+    hash.psd8 r5 into r6 as field;
+    hash.psd8 r6 into r7 as field;
+    hash.psd8 r7 into r8 as field;
+    hash.psd8 r8 into r9 as field;
+    hash.psd8 r9 into r10 as field;
+    hash.psd8 r10 into r11 as field;
+    hash.psd8 r11 into r12 as field;
+    hash.psd8 r12 into r13 as field;
+    hash.psd8 r13 into r14 as field;
+    hash.psd8 r14 into r15 as field;
+    hash.psd8 r15 into r16 as field;
+    hash.psd8 r16 into r17 as field;
+    hash.psd8 r17 into r18 as field;
+    hash.psd8 r18 into r19 as field;
+    hash.psd8 r19 into r20 as field;
+    hash.psd8 r20 into r21 as field;
+    hash.psd8 r21 into r22 as field;
+    hash.psd8 r22 into r23 as field;
+    hash.psd8 r23 into r24 as field;
+    hash.psd8 r24 into r25 as field;
+    hash.psd8 r25 into r26 as field;
+    hash.psd8 r26 into r27 as field;
+    hash.psd8 r27 into r28 as field;
+    hash.psd8 r28 into r29 as field;
+    hash.psd8 r29 into r30 as field;
+    hash.psd8 r30 into r31 as field;
+    hash.psd8 r31 into r32 as field;
+    hash.psd8 r32 into r33 as field;
+    hash.psd8 r33 into r34 as field;
+    hash.psd8 r34 into r35 as field;
+    hash.psd8 r35 into r36 as field;
+    hash.psd8 r36 into r37 as field;
+    hash.psd8 r37 into r38 as field;
+    hash.psd8 r38 into r39 as field;
+    hash.psd8 r39 into r40 as field;
+    hash.psd8 r40 into r41 as field;
+    hash.psd8 r41 into r42 as field;
+    hash.psd8 r42 into r43 as field;
+    hash.psd8 r43 into r44 as field;
+    hash.psd8 r44 into r45 as field;
+    hash.psd8 r45 into r46 as field;
+    hash.psd8 r46 into r47 as field;
+    hash.psd8 r47 into r48 as field;
+    output r48 as field.private;
