@@ -1,6 +1,6 @@
 # set the variables
 
-node_number = 1
+node_number = 0
 
 # rest of the code
 
